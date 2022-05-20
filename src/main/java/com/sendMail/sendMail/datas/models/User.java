@@ -1,0 +1,4 @@
+package com.sendMail.sendMail.datas.models;
+
+public class User {
+}
