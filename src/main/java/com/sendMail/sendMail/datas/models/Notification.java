@@ -3,6 +3,7 @@ package com.sendMail.sendMail.datas.models;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
@@ -10,8 +11,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Document
 public class Notification {
-    private String id;
-    private String title;
+    @Id
     private String email;
+    private String title;
     private Message message;
 }

@@ -1,6 +1,7 @@
 package com.sendMail.sendMail.services;
 
 import com.sendMail.sendMail.datas.models.User;
+import com.sendMail.sendMail.datas.repositories.MailBoxesRepository;
 import com.sendMail.sendMail.datas.repositories.UserRepository;
 import com.sendMail.sendMail.dtos.requests.user.*;
 import com.sendMail.sendMail.dtos.responses.user.UserResponse;
@@ -20,12 +21,17 @@ public class UserServiceImpl implements UserService{
     ModelMapper modelMapper = new ModelMapper();
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    MailboxesServiceImpl mailboxesService;
+    @Autowired
+    MailBoxesRepository mailBoxesRepository;
     @Override
     public UserResponse register(UserRequest userRequest) {
         Optional<User> optionalUser = userRepository.findById(userRequest.getEmailAddress());
         if(optionalUser.isPresent()) throw new SendEmailException("Email Already Exist");
         User user = new User();
         modelMapper.map(userRequest,user);
+        mailboxesService.create(user.getEmailAddress());
         userRepository.save(user);
         UserResponse userResponse = new UserResponse();
         userResponse.setEmailAddress(userRequest.getEmailAddress());
@@ -105,6 +111,7 @@ public class UserServiceImpl implements UserService{
             if ((deleteRequest.getPassword().equals(deleteRequest.getConfirmPassword()))) {
                 if (user.getPassword().equals(deleteRequest.getPassword())) {
                         userRepository.deleteById(deleteRequest.getEmailAddress());
+                        mailBoxesRepository.deleteById(deleteRequest.getEmailAddress());
                         return "User Account successfully Deleted";
 
                     }

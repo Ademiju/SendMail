@@ -30,6 +30,7 @@ class UserServiceImplTest {
     @Autowired
     UserRepository userRepository;
 
+
     UserRequest createUserAccount;
     UserRequest createUserAccount2;
     LoginRequest loginRequest;
@@ -193,6 +194,7 @@ class UserServiceImplTest {
         String message = userService.logout(loginRequest.getEmailAddress());
         assertThat(message,is("Logout Successful"));
     }
+
         @AfterEach
     void tearDown() {
         userRepository.deleteAll();
