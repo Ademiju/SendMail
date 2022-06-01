@@ -4,6 +4,7 @@ import com.sendMail.sendMail.datas.models.Message;
 import com.sendMail.sendMail.datas.repositories.MailBoxesRepository;
 import com.sendMail.sendMail.dtos.requests.message.SendManyMessageRequest;
 import com.sendMail.sendMail.exceptions.UserNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -18,6 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 @SpringBootTest
 @ImportAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
+
 
 class MessageServiceImplTest {
     @Autowired
@@ -44,6 +46,17 @@ class MessageServiceImplTest {
         sendMails.add("John@sendmail.com");
         SendManyMessageRequest sendManyMessageRequest = new SendManyMessageRequest("Ademiju@sendmail.com", sendMails,"Hi guys, meeting starts by 12am");
         assertThat(messageService.sendToMany(sendManyMessageRequest),is("Message Sent"));
+
+    }
+    @Test
+    void messageToMultipleEmailSendsToOnlyValidEmailTest(){
+        List<String> sendMails = new ArrayList<>();
+        sendMails.add("Increase@sendmail.com");
+        sendMails.add("Mikie@sendmail.com");
+        sendMails.add("John@sendmail.com");
+        SendManyMessageRequest sendManyMessageRequest = new SendManyMessageRequest("Ademiju@sendmail.com", sendMails,"Hi guys, meeting has been cancelled. More details soon.Best regards");
+        assertThat(messageService.sendToMany(sendManyMessageRequest),is("Message Sent"));
+
 
     }
 

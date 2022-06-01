@@ -7,6 +7,7 @@ import com.sendMail.sendMail.datas.repositories.MessageRepository;
 import com.sendMail.sendMail.dtos.requests.message.SendManyMessageRequest;
 import com.sendMail.sendMail.dtos.requests.message.SendMessageRequest;
 import com.sendMail.sendMail.exceptions.UserNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class MessageServiceImpl implements MessageService{
     ModelMapper modelMapper = new ModelMapper();
@@ -38,14 +40,20 @@ public class MessageServiceImpl implements MessageService{
     @Override
     public String sendToMany(SendManyMessageRequest sendManyMessageRequest) {
         boolean isValid = true;
-        Message message = new Message();
-        modelMapper.map(sendManyMessageRequest,message);
+
         for (String receiver:sendManyMessageRequest.getReceiverSendMailAddress()) {
             Optional<Mailboxes> receiverMailBoxes = mailBoxesRepository.findById(receiver);
             if(receiverMailBoxes.isPresent()){
+                Message message = new Message();
+                modelMapper.map(sendManyMessageRequest,message);
+                messageRepository.save(message);
+                log.info("message---->{}",message);
                 receiverMailBoxes.get().getMailboxes().get(0).getMessages().add(message);
-                mailBoxesRepository.save(receiverMailBoxes);
+                mailBoxesRepository.save(receiverMailBoxes.get());
             }else{
+                Message message = new Message();
+                modelMapper.map(sendManyMessageRequest,message);
+                messageRepository.save(message);
                 Mailboxes senderMailboxes = mailBoxesRepository.findById(message.getSenderEmailAddress()).orElseThrow(()-> new UserNotFoundException("Sendmail does not exist"));
                 message.setErrorMessage(receiver+" does not exist or is inactive");
                 senderMailboxes.getMailboxes().get(1).getMessages().add(message);
@@ -54,12 +62,13 @@ public class MessageServiceImpl implements MessageService{
             }
         }
         if(isValid){
+            Message message = new Message();
+            modelMapper.map(sendManyMessageRequest,message);
+            messageRepository.save(message);
             Mailboxes senderMailboxes = mailBoxesRepository.findById(message.getSenderEmailAddress()).orElseThrow(()-> new UserNotFoundException("Sendmail does not exist"));
             senderMailboxes.getMailboxes().get(1).getMessages().add(message);
             mailBoxesRepository.save(senderMailboxes);
         }
-
-
         return "Message Sent";
     }
 

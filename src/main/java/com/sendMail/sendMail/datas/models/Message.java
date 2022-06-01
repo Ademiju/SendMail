@@ -1,15 +1,12 @@
 package com.sendMail.sendMail.datas.models;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+@ToString
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,15 +28,11 @@ public class Message {
         this.senderEmailAddress = senderEmailAddress;
         this.receiverEmailAddress = receiverEmailAddress;
         this.messageBody = messageBody;
-        dateTime = LocalDateTime.now();
-
     }
     public Message(String senderEmailAddress, String receiverEmailAddress,String subject, String messageBody) {
         this.senderEmailAddress = senderEmailAddress;
         this.receiverEmailAddress = receiverEmailAddress;
         this.subject = subject;
         this.messageBody = messageBody;
-        dateTime = LocalDateTime.now();
-
     }
 }
