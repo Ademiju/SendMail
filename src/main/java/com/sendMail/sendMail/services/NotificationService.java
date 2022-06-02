@@ -1,8 +1,9 @@
 package com.sendMail.sendMail.services;
 
+import com.sendMail.sendMail.datas.models.Message;
 import com.sendMail.sendMail.datas.models.Notification;
 
 public interface NotificationService {
-    Notification create(String email);
+    Notification create(Message message);
     void read(String messageId);
 }

@@ -2,8 +2,6 @@ package com.sendMail.sendMail.services;
 
 import com.sendMail.sendMail.datas.models.Mailbox;
 import com.sendMail.sendMail.datas.models.Mailboxes;
-import com.sendMail.sendMail.dtos.requests.mailboxes.MailboxRequest;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

@@ -29,8 +29,8 @@ class MessageServiceImplTest {
 
     @Test
     void messageCanBeSentTest(){
-        Message message = new Message("Ademiju@sendmail.com","Increase@sendmail.com","Hi, Increase how are you today?");
-        assertThat(messageService.send(message),is("Message Sent"));
+        Message messageRequest = new Message("Ademiju@sendmail.com","Increase@sendmail.com","Hi, Increase how are you today?");
+        assertThat(messageService.send(messageRequest),is("Message Sent"));
     }
     @Test
     void sendMessageToIncorrectSendmailThrowsExceptionTest(){
@@ -56,8 +56,9 @@ class MessageServiceImplTest {
         sendMails.add("John@sendmail.com");
         SendManyMessageRequest sendManyMessageRequest = new SendManyMessageRequest("Ademiju@sendmail.com", sendMails,"Hi guys, meeting has been cancelled. More details soon.Best regards");
         assertThat(messageService.sendToMany(sendManyMessageRequest),is("Message Sent"));
-
-
     }
-
+//    @Test
+//    void messageSentToReceiverSendsANotification(){
+//        messageService.send()
+//    }
 }

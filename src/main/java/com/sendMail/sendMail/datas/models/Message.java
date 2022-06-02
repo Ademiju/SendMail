@@ -14,7 +14,7 @@ import java.util.List;
 public class Message {
     @Id
     private String id;
-    private LocalDateTime dateTime;
+    private LocalDateTime dateTime = LocalDateTime.now();
     private String subject;
     private String senderEmailAddress;
     private String receiverEmailAddress;
