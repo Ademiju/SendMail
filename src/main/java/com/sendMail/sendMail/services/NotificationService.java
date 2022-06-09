@@ -5,5 +5,5 @@ import com.sendMail.sendMail.datas.models.Notification;
 
 public interface NotificationService {
     Notification create(Message message);
-    void read(String messageId);
+    Notification read(String messageId);
 }

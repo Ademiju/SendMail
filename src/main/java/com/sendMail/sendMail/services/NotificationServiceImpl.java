@@ -25,7 +25,16 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public void read(String messageId) {
+    public Notification read(String messageId) {
+        Message message = messageRepository.findById(messageId).orElseThrow();
+        message.getNotification().getId();
+        Notification notification = notificationRepository.findById(message.getNotification().getId()).get();
+        notification.setRead(true);
+        message.setNotification(notification);
+        messageRepository.save(message);
+        notificationRepository.save(notification);
+
+        return notification;
 
     }
 }
