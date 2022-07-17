@@ -14,7 +14,6 @@ import java.util.List;
 @Service
 public class MailboxesServiceImpl implements MailboxesService {
 
-    ModelMapper modelMapper = new ModelMapper();
     @Autowired
     MailBoxesRepository mailBoxesRepository;
 
@@ -35,12 +34,14 @@ public class MailboxesServiceImpl implements MailboxesService {
     }
 
     @Override
-    public List<Mailbox> viewAllInbox(String email) {
-        return null;
+    public List<Message> viewAllInbox(String email) {
+        Mailboxes mailboxes = mailBoxesRepository.findById(email).get();
+        return mailboxes.getMailboxes().get(0).getMessages();
     }
 
     @Override
-    public List<Mailbox> viewAllOutbox(String email) {
-        return null;
+    public List<Message> viewAllOutbox(String email) {
+        Mailboxes mailboxes = mailBoxesRepository.findById(email).get();
+        return mailboxes.getMailboxes().get(1).getMessages();
     }
 }

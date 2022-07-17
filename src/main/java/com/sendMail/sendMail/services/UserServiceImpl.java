@@ -5,10 +5,7 @@ import com.sendMail.sendMail.datas.repositories.MailBoxesRepository;
 import com.sendMail.sendMail.datas.repositories.UserRepository;
 import com.sendMail.sendMail.dtos.requests.user.*;
 import com.sendMail.sendMail.dtos.responses.user.UserResponse;
-import com.sendMail.sendMail.exceptions.IncorrectLoginDetailsException;
-import com.sendMail.sendMail.exceptions.SendEmailException;
-import com.sendMail.sendMail.exceptions.UnMatchingDetailsException;
-import com.sendMail.sendMail.exceptions.UserNotFoundException;
+import com.sendMail.sendMail.exceptions.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,7 +56,7 @@ public class UserServiceImpl implements UserService{
         if (user.isLoggedIn()) {
             if (!updateDetailsRequest.getEmailAddress().trim().equals("")) {
                 Optional<User> existingUser = userRepository.findById(updateDetailsRequest.getEmailAddress());
-                if (existingUser.isPresent()) throw new SendEmailException("Email Already Exist");
+                if (existingUser.isPresent()) throw new EmailAlreadyExistsException("Email Already Exist");
                 user.setEmailAddress(updateDetailsRequest.getEmailAddress());
             }
 

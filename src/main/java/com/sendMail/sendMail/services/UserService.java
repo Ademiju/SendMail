@@ -12,7 +12,7 @@ public interface UserService {
     String updatePassword(UpdatePasswordRequest updatePasswordRequest, String email);
     String deleteAccount(DeleteRequest deleteRequest);
     User findByEmailAddress(String email);
-    String logout(String email);
+    String   logout(String email);
 
 
 

@@ -1,9 +1,7 @@
 package com.sendMail.sendMail.services;
 
 import com.sendMail.sendMail.datas.models.Message;
-import com.sendMail.sendMail.dtos.requests.message.ForwardMessageRequest;
 import com.sendMail.sendMail.dtos.requests.message.SendManyMessageRequest;
-import com.sendMail.sendMail.dtos.requests.message.SendMessageRequest;
 import com.sendMail.sendMail.dtos.responses.message.SendMessageResponse;
 
 import java.util.List;

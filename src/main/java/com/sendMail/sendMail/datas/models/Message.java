@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Document
+@Document("sendMailMessages")
 public class Message {
     @Id
     private String id;

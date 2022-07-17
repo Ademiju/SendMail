@@ -12,7 +12,8 @@ import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoCo
 import org.springframework.boot.test.context.SpringBootTest;
 
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 @SpringBootTest
@@ -47,17 +48,31 @@ class MailboxesServiceImplTest {
         assertThat(mailboxes4.getOwnerId(), is("John@sendmail.com"));
         assertThat(mailboxes4.getMailboxes().size(), is(2));
     }
-//    @Test
-//    void senderMessageIsDeliveredToTheInboxOfReceiverTest(){
-//        Mailboxes mailboxes = mailboxesService.create("Ademiju@sendmail.com");
-//        Mailboxes mailboxes2 = mailboxesService.create("Increase@sendmail.com");
-//        Message message = new Message(mailboxes2.getOwnerId(),mailboxes.getOwnerId(),"Hi, Miju What do you want for dinner?");
-//        messageService.send(message);
-//        assertThat(mailboxes.getMailboxes().get(0).getType(),is(MailboxType.INBOX));
-//        assertThat(mailboxes2.getMailboxes().get(1).getType(),is(MailboxType.SENT));
-//        assertThat(mailboxes.getMailboxes().get(0).getMessages().get(0).getReceiverEmailAddress(),is("Increase@sendmail.com"));
-//        assertThat(mailboxes.getMailboxes().get(0).getMessages().get(0).getMessageBody(),is("Hi, Miju What do you want for dinner?"));
-//        assertThat(mailboxes.getMailboxes().get(0).getMessages().size(),is(1));
-//        assertThat(mailboxes2.getMailboxes().get(1).getMessages().size(),is(1));
-//}
+
+    @Test
+    void userCanViewAllInboxMessageTest(){
+        mailboxesService.create("Ademiju@sendmail.com");
+        mailboxesService.create("Increase@sendmail.com");
+        Message messageRequest = new Message("Increase@sendmail.com","Ademiju@sendmail.com","Hi, Increase how are you today?");
+        messageService.send(messageRequest);
+        messageService.send(messageRequest);
+        messageService.send(messageRequest);
+        messageService.send(messageRequest);
+        List<Message> messages = mailboxesService.viewAllInbox(messageRequest.getReceiverEmailAddress());
+        assertThat(messages.size(),is(4));
+
+    }
+    @Test
+    void userCanViewAllOutboxMessageTest(){
+        mailboxesService.create("Ademiju@sendmail.com");
+        mailboxesService.create("Increase@sendmail.com");
+        Message messageRequest = new Message("Increase@sendmail.com","Ademiju@sendmail.com","Hi, Increase how are you today?");
+        messageService.send(messageRequest);
+        messageService.send(messageRequest);
+        messageService.send(messageRequest);
+        messageService.send(messageRequest);
+        List<Message> messages = mailboxesService.viewAllOutbox(messageRequest.getSenderEmailAddress());
+        assertThat(messages.size(),is(4));
+
+    }
 }

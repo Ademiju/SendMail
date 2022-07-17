@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Setter
 @Getter
-@Document
+@Document("sendMailMailboxes")
 
 public class Mailboxes {
     @Id

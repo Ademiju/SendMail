@@ -14,8 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -35,7 +33,7 @@ class MessageServiceImplTest {
     @Test
     void messageCanBeSentTest(){
         Message messageRequest = new Message("Ademiju@sendmail.com","Increase@sendmail.com","Hi, Increase how are you today?");
-        assertThat(messageService.send(messageRequest),is("Message Sent"));
+        assertThat(messageService.send(messageRequest).getAlert(),is("Message Sent"));
     }
     @Test
     void sendMessageToIncorrectSendmailThrowsExceptionTest(){
@@ -81,7 +79,7 @@ class MessageServiceImplTest {
 
     }
     @Test
-    void messageCanBeForwardedTest(){
+    void messageCanBeForwardedToOneReceiverTest(){
         Message messageRequest = new Message("Ademiju@sendmail.com","Increase@sendmail.com","Hi, Increase how are you today?");
         SendMessageResponse sentMessageResponse = messageService.send(messageRequest);
         List<String> sendMails = new ArrayList<>();
@@ -91,5 +89,20 @@ class MessageServiceImplTest {
         SendManyMessageRequest sendManyMessageRequest = new SendManyMessageRequest("Ademiju@sendmail.com", sendMails,"Our meeting update");
         List<SendMessageResponse> forwardedMessageResponse = messageService.forward(sendManyMessageRequest,sentMessageResponse.getMessage().getId());
         assertThat(forwardedMessageResponse.get(0).getMessage().getMessageBody(),is(sentMessageResponse.getMessage().getMessageBody()));
+    }
+
+    @Test
+    void messageCanBeForwardedToManyReceiverTest(){
+        Message messageRequest = new Message("Ademiju@sendmail.com","Increase@sendmail.com","Hi, Increase how are you today?");
+        SendMessageResponse sentMessageResponse = messageService.send(messageRequest);
+        List<String> sendMails = new ArrayList<>();
+        sendMails.add("Bamise@sendmail.com");
+        sendMails.add("Mike@sendmail.com");
+        sendMails.add("John@sendmail.com");
+        SendManyMessageRequest sendManyMessageRequest = new SendManyMessageRequest("Ademiju@sendmail.com", sendMails,"Our meeting update");
+        List<SendMessageResponse> forwardedMessageResponse = messageService.forward(sendManyMessageRequest,sentMessageResponse.getMessage().getId());
+        assertThat(forwardedMessageResponse.get(0).getMessage().getMessageBody(),is(sentMessageResponse.getMessage().getMessageBody()));
+        assertThat(forwardedMessageResponse.get(1).getMessage().getMessageBody(),is(sentMessageResponse.getMessage().getMessageBody()));
+        assertThat(forwardedMessageResponse.get(2).getMessage().getMessageBody(),is(sentMessageResponse.getMessage().getMessageBody()));
     }
 }

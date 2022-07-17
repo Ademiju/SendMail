@@ -13,7 +13,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@Document
+@Document("sendMailNotifications")
 public class Notification {
     @Id
     private String id;

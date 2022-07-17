@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @RequiredArgsConstructor
 
-@Document("sendMailUser")
+@Document("sendMailUsers")
 public class User {
 
     @Email@Id@NonNull
